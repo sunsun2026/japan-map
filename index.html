@@ -442,11 +442,11 @@ function showAdmin(){
   content.innerHTML='';
   REGIONS.forEach(r=>{
     const d=document.createElement('div'); d.className='admin-region';
-    d.innerHTML='<h4 style="color:#3a9ab0;border-bottom:1px solid #ddd;margin-bottom:5px;">'+REGION_NAMES[r].en+'</h4>';
+    d.innerHTML='<h4 style="color:#3a9ab0;border-bottom:1px solid #ddd;margin-bottom:5px;">'+REGION_NAMES[r].zh+'</h4>';
     (cities[r]||[]).forEach((c,i)=>{
       const row=document.createElement('div'); row.className='admin-city-row';
       row.innerHTML='<input type="checkbox"'+(c.visible!==false?' checked':'')+' data-r="'+r+'" data-i="'+i+'" data-f="v">'+
-        '<span style="width:70px;overflow:hidden;">'+(c.name.en||c.name)+'</span>'+
+        '<span style="width:70px;overflow:hidden;">'+(c.name.zh||c.name)+'</span>'+
         '<input type="text" value="'+(c.url||'')+'" data-r="'+r+'" data-i="'+i+'" data-f="u">';
       d.appendChild(row);
     });
