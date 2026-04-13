@@ -5,10 +5,10 @@
 <title>Japan Travel Map</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:#e8f4f7;font-family:'Hiragino Sans','Noto Sans CJK SC',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:15px 10px 40px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+body{background:#fff;font-family:'Hiragino Sans','Noto Sans CJK SC',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:15px 10px 40px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 
-#tip-text{font-size:15px;color:#2a7a8a;font-weight:700;text-align:center;width:100%;max-width:500px;margin-bottom:6px;}
-#header-bar{width:100%;max-width:500px;display:flex;justify-content:flex-end;align-items:center;margin-bottom:8px;padding:0 4px;will-change:transform;}
+#header-bar{width:100%;max-width:500px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:0 4px;}
+#tip-text{font-size:13px;color:#2a7a8a;font-weight:600;}
 #lang-select{border:1px solid #9dd;border-radius:6px;padding:4px 6px;font-size:12px;background:#fff;color:#447;cursor:pointer;outline:none;}
 
 .map-card{background:#fff;border-radius:16px;border:2px solid #fff;box-shadow:0 0 0 2px #fff;padding:16px;width:100%;max-width:500px;will-change:transform;contain:paint;}
@@ -52,8 +52,8 @@ g[data-region].active .prefecture{fill:#f4a0b0!important;stroke:#f4a0b0!importan
 </style></head>
 <body>
 
-<div id="tip-text"></div>
 <div id="header-bar">
+  <div id="tip-text"></div>
   <select id="lang-select">
     <option value="zh">简体中文</option>
     <option value="zh-tw">繁體中文</option>
@@ -325,23 +325,7 @@ const TIP_TEXT = {"zh":"点击地图导航，快速前往目的地","zh-tw":"點
 const REGIONS = Object.keys(REGION_NAMES);
 const ADMIN_PWD = 'Gaibian0821ll';
 
-function browserLang(){
-  const l=(navigator.language||'en').toLowerCase();
-  if(l.startsWith('zh-tw')||l.startsWith('zh-hk'))return 'zh-tw';
-  if(l.startsWith('zh'))return 'zh';
-  if(l.startsWith('ja'))return 'ja';
-  if(l.startsWith('ko'))return 'ko';
-  if(l.startsWith('th'))return 'th';
-  if(l.startsWith('vi'))return 'vi';
-  return 'en';
-}
-let currentLang = browserLang();
-
-const COUNTRY_LANG = { CN:'zh', TW:'zh-tw', HK:'zh-tw', MO:'zh-tw', JP:'ja', KR:'ko', TH:'th', VN:'vi' };
-fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
-  const ipL = COUNTRY_LANG[d.country_code];
-  if(ipL && ipL !== currentLang){ currentLang = ipL; applyLang(); }
-}).catch(()=>{});
+let currentLang = 'en';
 
 function applyLang(){
   document.getElementById('lang-select').value = currentLang;
