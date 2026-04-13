@@ -12,7 +12,8 @@ body{background:#fff;font-family:'Hiragino Sans','Noto Sans CJK SC',sans-serif;m
 #lang-select{border:1px solid #9dd;border-radius:6px;padding:4px 6px;font-size:12px;background:#fff;color:#447;cursor:pointer;outline:none;position:absolute;right:0;}
 
 .map-card{background:#fff;border-radius:16px;border:2px solid #fff;box-shadow:0 0 0 2px #fff;padding:16px;width:100%;max-width:500px;will-change:transform;contain:paint;}
-svg.geolonia-svg-map{width:100%;height:auto;display:block;shape-rendering:optimizeSpeed;}
+svg.geolonia-svg-map{width:100%;height:auto;display:block;shape-rendering:optimizeSpeed;opacity:0;transition:opacity 0.2s ease;}
+svg.geolonia-svg-map.ready{opacity:1;}
 
 [data-region="hokkaido"] .prefecture{fill:#4eb8cc!important;stroke:#4eb8cc!important;stroke-width:1!important;}
 [data-region="tohoku"]   .prefecture{fill:#5ac4c0!important;stroke:#5ac4c0!important;stroke-width:1!important;}
@@ -446,5 +447,6 @@ document.getElementById('admin-save').addEventListener('click',()=>{
 });
 
 applyLang();
+requestAnimationFrame(()=>svg.classList.add('ready'));
 </script>
 </body></html>
