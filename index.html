@@ -393,16 +393,21 @@ function updateLabels(){
   });
 }
 
+const regionEls={};
+REGIONS.forEach(r=>{ regionEls[r]=document.querySelector('g[data-region="'+r+'"]'); });
+
 function selectRegion(r){
+  if(selectedRegion && regionEls[selectedRegion]) regionEls[selectedRegion].classList.remove('active');
   selectedRegion=r;
-  document.querySelectorAll('g[data-region]').forEach(g=>g.classList.remove('active'));
-  document.querySelector('g[data-region="'+r+'"]').classList.add('active');
+  if(regionEls[r]) regionEls[r].classList.add('active');
   showCities(r);
 }
 
+let _citiesCache=null;
 function showCities(r){
   const panel=document.getElementById('city-panel'), list=document.getElementById('city-list'), title=document.getElementById('city-panel-title');
-  const cities=getCities(), rc=(cities[r]||[]).filter(c=>c.visible!==false);
+  if(!_citiesCache) _citiesCache=getCities();
+  const rc=(_citiesCache[r]||[]).filter(c=>c.visible!==false);
   title.textContent=REGION_NAMES[r][currentLang]||r;
   list.innerHTML='';
   if(!rc.length) list.innerHTML='<span style="color:#aaa;font-size:13px;">No data</span>';
@@ -448,7 +453,7 @@ document.getElementById('admin-save').addEventListener('click',()=>{
   const cities=getCities();
   document.querySelectorAll('input[data-f="v"]').forEach(cb=>{ cities[cb.dataset.r][cb.dataset.i].visible=cb.checked; });
   document.querySelectorAll('input[data-f="u"]').forEach(inp=>{ cities[inp.dataset.r][inp.dataset.i].url=inp.value.trim(); });
-  saveCities(cities); document.getElementById('admin-overlay').classList.remove('show'); if(selectedRegion)showCities(selectedRegion);
+  saveCities(cities); _citiesCache=null; document.getElementById('admin-overlay').classList.remove('show'); if(selectedRegion)showCities(selectedRegion);
 });
 
 applyLang();
