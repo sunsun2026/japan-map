@@ -325,13 +325,15 @@ const TIP_TEXT = {"zh":"点击地图导航，快速前往目的地","zh-tw":"點
 const REGIONS = Object.keys(REGION_NAMES);
 const ADMIN_PWD = 'Gaibian0821ll';
 
-let currentLang = 'en';
+let currentLang = localStorage.getItem('jp_lang') || 'en';
 
 const COUNTRY_LANG = { CN:'zh', TW:'zh-tw', HK:'zh-tw', MO:'zh-tw', JP:'ja', KR:'ko', TH:'th', VN:'vi' };
-fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
-  const ipL = COUNTRY_LANG[d.country_code];
-  if(ipL){ currentLang = ipL; applyLang(); }
-}).catch(()=>{});
+if(!localStorage.getItem('jp_lang')){
+  fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
+    const ipL = COUNTRY_LANG[d.country_code];
+    if(ipL){ currentLang = ipL; applyLang(); }
+  }).catch(()=>{});
+}
 
 function applyLang(){
   document.getElementById('lang-select').value = currentLang;
@@ -342,6 +344,7 @@ function applyLang(){
 
 document.getElementById('lang-select').addEventListener('change', e=>{
   currentLang = e.target.value;
+  localStorage.setItem('jp_lang', currentLang);
   applyLang();
 });
 
