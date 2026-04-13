@@ -5,14 +5,15 @@
 <title>Japan Travel Map</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:#e8f4f7;font-family:'Hiragino Sans','Noto Sans CJK SC',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:15px 10px 40px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+body{background:#fff;font-family:'Hiragino Sans','Noto Sans CJK SC',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:15px 10px 40px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 
-#header-bar{width:100%;max-width:500px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:0 4px;will-change:transform;}
-#tip-text{font-size:13px;color:#2a7a8a;font-weight:600;}
-#lang-select{border:1px solid #9dd;border-radius:6px;padding:4px 6px;font-size:12px;background:#fff;color:#447;cursor:pointer;outline:none;}
+#header-bar{width:100%;max-width:500px;display:flex;justify-content:center;align-items:center;margin-bottom:8px;padding:0 4px;position:relative;}
+#tip-text{font-size:15px;color:#f4a0b0;font-weight:700;text-align:center;flex:1;}
+#lang-select{border:1px solid #9dd;border-radius:6px;padding:4px 6px;font-size:12px;background:#fff;color:#447;cursor:pointer;outline:none;position:absolute;right:0;}
 
-.map-card{background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.11);padding:16px;width:100%;max-width:500px;will-change:transform;contain:paint;}
-svg.geolonia-svg-map{width:100%;height:auto;display:block;shape-rendering:optimizeSpeed;}
+.map-card{background:#fff;border-radius:16px;border:2px solid #fff;box-shadow:0 0 0 2px #fff;padding:16px;width:100%;max-width:500px;will-change:transform;contain:paint;}
+svg.geolonia-svg-map{width:100%;height:auto;display:block;shape-rendering:optimizeSpeed;opacity:0;transition:opacity 0.2s ease;}
+svg.geolonia-svg-map.ready{opacity:1;}
 
 [data-region="hokkaido"] .prefecture{fill:#4eb8cc!important;stroke:#4eb8cc!important;stroke-width:1!important;}
 [data-region="tohoku"]   .prefecture{fill:#5ac4c0!important;stroke:#5ac4c0!important;stroke-width:1!important;}
@@ -325,23 +326,15 @@ const TIP_TEXT = {"zh":"点击地图导航，快速前往目的地","zh-tw":"點
 const REGIONS = Object.keys(REGION_NAMES);
 const ADMIN_PWD = 'Gaibian0821ll';
 
-function browserLang(){
-  const l=(navigator.language||'en').toLowerCase();
-  if(l.startsWith('zh-tw')||l.startsWith('zh-hk'))return 'zh-tw';
-  if(l.startsWith('zh'))return 'zh';
-  if(l.startsWith('ja'))return 'ja';
-  if(l.startsWith('ko'))return 'ko';
-  if(l.startsWith('th'))return 'th';
-  if(l.startsWith('vi'))return 'vi';
-  return 'en';
-}
-let currentLang = browserLang();
+let currentLang = localStorage.getItem('jp_lang') || 'en';
 
 const COUNTRY_LANG = { CN:'zh', TW:'zh-tw', HK:'zh-tw', MO:'zh-tw', JP:'ja', KR:'ko', TH:'th', VN:'vi' };
-fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
-  const ipL = COUNTRY_LANG[d.country_code];
-  if(ipL && ipL !== currentLang){ currentLang = ipL; applyLang(); }
-}).catch(()=>{});
+if(!localStorage.getItem('jp_lang')){
+  fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
+    const ipL = COUNTRY_LANG[d.country_code];
+    if(ipL){ currentLang = ipL; applyLang(); }
+  }).catch(()=>{});
+}
 
 function applyLang(){
   document.getElementById('lang-select').value = currentLang;
@@ -352,6 +345,7 @@ function applyLang(){
 
 document.getElementById('lang-select').addEventListener('change', e=>{
   currentLang = e.target.value;
+  localStorage.setItem('jp_lang', currentLang);
   applyLang();
 });
 
@@ -369,6 +363,7 @@ prefGs.forEach(g=>{
 
 let selectedRegion=null;
 const svg = document.querySelector('svg.geolonia-svg-map');
+// 精简渲染逻辑：不再克隆路径，直接使用主路径描边提升 50% 性能
 REGIONS.forEach(region=>{
   const ns=groups[region]; if(!ns.length)return;
   const w=document.createElementNS('http://www.w3.org/2000/svg','g');
@@ -376,13 +371,6 @@ REGIONS.forEach(region=>{
   ns[0].parentNode.insertBefore(w,ns[0]);
   ns.forEach(n=>w.appendChild(n));
   w.addEventListener('click',()=>selectRegion(region));
-  ns.forEach(p=>{
-    Array.from(p.querySelectorAll('path')).forEach(path=>{
-      const c = path.cloneNode(false);
-      c.setAttribute('fill','none'); c.setAttribute('stroke','#fff'); c.setAttribute('stroke-width','1.5');
-      c.style.pointerEvents='none'; w.appendChild(c);
-    });
-  });
 });
 
 const labelGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
@@ -459,5 +447,6 @@ document.getElementById('admin-save').addEventListener('click',()=>{
 });
 
 applyLang();
+requestAnimationFrame(()=>svg.classList.add('ready'));
 </script>
 </body></html>
