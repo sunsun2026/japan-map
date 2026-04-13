@@ -327,6 +327,12 @@ const ADMIN_PWD = 'Gaibian0821ll';
 
 let currentLang = 'en';
 
+const COUNTRY_LANG = { CN:'zh', TW:'zh-tw', HK:'zh-tw', MO:'zh-tw', JP:'ja', KR:'ko', TH:'th', VN:'vi' };
+fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
+  const ipL = COUNTRY_LANG[d.country_code];
+  if(ipL){ currentLang = ipL; applyLang(); }
+}).catch(()=>{});
+
 function applyLang(){
   document.getElementById('lang-select').value = currentLang;
   document.getElementById('tip-text').textContent = TIP_TEXT[currentLang] || TIP_TEXT.en;
