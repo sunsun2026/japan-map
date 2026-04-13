@@ -7,8 +7,8 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:#e8f4f7;font-family:'Hiragino Sans','Noto Sans CJK SC',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:15px 10px 40px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 
-#header-bar{width:100%;max-width:500px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:0 4px;will-change:transform;}
-#tip-text{font-size:13px;color:#2a7a8a;font-weight:600;}
+#tip-text{font-size:15px;color:#2a7a8a;font-weight:700;text-align:center;width:100%;max-width:500px;margin-bottom:6px;}
+#header-bar{width:100%;max-width:500px;display:flex;justify-content:flex-end;align-items:center;margin-bottom:8px;padding:0 4px;will-change:transform;}
 #lang-select{border:1px solid #9dd;border-radius:6px;padding:4px 6px;font-size:12px;background:#fff;color:#447;cursor:pointer;outline:none;}
 
 .map-card{background:#fff;border-radius:16px;border:2px solid #fff;box-shadow:0 0 0 2px #fff;padding:16px;width:100%;max-width:500px;will-change:transform;contain:paint;}
@@ -52,8 +52,8 @@ g[data-region].active .prefecture{fill:#f4a0b0!important;stroke:#f4a0b0!importan
 </style></head>
 <body>
 
+<div id="tip-text"></div>
 <div id="header-bar">
-  <div id="tip-text"></div>
   <select id="lang-select">
     <option value="zh">简体中文</option>
     <option value="zh-tw">繁體中文</option>
