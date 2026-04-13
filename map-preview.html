@@ -5,68 +5,69 @@
 <title>日本旅游地图</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:#f0f4f8;font-family:'Hiragino Sans','Noto Sans CJK SC',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 10px 40px;}
-
-/* 顶部语言切换 */
+body{background:#e8f4f7;font-family:'Hiragino Sans','Noto Sans CJK SC',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 10px 40px;}
 #lang-bar{width:100%;max-width:500px;display:flex;justify-content:flex-end;margin-bottom:8px;}
-#lang-select{border:1px solid #cce;border-radius:6px;padding:4px 8px;font-size:13px;background:#fff;color:#556;cursor:pointer;outline:none;}
-
-/* 地图卡片 */
+#lang-select{border:1px solid #9dd;border-radius:6px;padding:4px 8px;font-size:13px;background:#fff;color:#447;cursor:pointer;outline:none;}
 .map-card{background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.11);padding:16px;width:100%;max-width:500px;}
-
-/* SVG 地图 */
 svg.geolonia-svg-map{width:100%;height:auto;display:block;}
-[data-region="hokkaido"] .prefecture{fill:#4db6d0!important;stroke:#4db6d0!important;stroke-width:1.5!important;}
-[data-region="tohoku"]   .prefecture{fill:#5bc8a0!important;stroke:#5bc8a0!important;stroke-width:1.5!important;}
-[data-region="kanto"]    .prefecture{fill:#7ecbbd!important;stroke:#7ecbbd!important;stroke-width:1.5!important;}
-[data-region="chubu"]    .prefecture{fill:#6ab8c8!important;stroke:#6ab8c8!important;stroke-width:1.5!important;}
-[data-region="kinki"]    .prefecture{fill:#89d4b8!important;stroke:#89d4b8!important;stroke-width:1.5!important;}
-[data-region="chugoku"]  .prefecture{fill:#5aaec0!important;stroke:#5aaec0!important;stroke-width:1.5!important;}
-[data-region="shikoku"]  .prefecture{fill:#7fd4c0!important;stroke:#7fd4c0!important;stroke-width:1.5!important;}
-[data-region="kyushu"]   .prefecture{fill:#4ca8c0!important;stroke:#4ca8c0!important;stroke-width:1.5!important;}
-[data-region="okinawa"]  .prefecture{fill:#6dc4b8!important;stroke:#6dc4b8!important;stroke-width:1.5!important;}
-.prefecture{transition:fill .15s;}
+
+/* 天青色系 - 地区填充，同色stroke消除县界 */
+[data-region="hokkaido"] .prefecture{fill:#4eb8cc!important;stroke:#4eb8cc!important;stroke-width:1.5!important;}
+[data-region="tohoku"]   .prefecture{fill:#5ac4c0!important;stroke:#5ac4c0!important;stroke-width:1.5!important;}
+[data-region="kanto"]    .prefecture{fill:#3aafc4!important;stroke:#3aafc4!important;stroke-width:1.5!important;}
+[data-region="chubu"]    .prefecture{fill:#4dc4bc!important;stroke:#4dc4bc!important;stroke-width:1.5!important;}
+[data-region="kinki"]    .prefecture{fill:#2fa8c0!important;stroke:#2fa8c0!important;stroke-width:1.5!important;}
+[data-region="chugoku"]  .prefecture{fill:#52bec8!important;stroke:#52bec8!important;stroke-width:1.5!important;}
+[data-region="shikoku"]  .prefecture{fill:#3db8b8!important;stroke:#3db8b8!important;stroke-width:1.5!important;}
+[data-region="kyushu"]   .prefecture{fill:#48c0c8!important;stroke:#48c0c8!important;stroke-width:1.5!important;}
+[data-region="okinawa"]  .prefecture{fill:#5accc4!important;stroke:#5accc4!important;stroke-width:1.5!important;}
+
+/* 地区边界白色细线 */
 g[data-region]{cursor:pointer;}
+g[data-region]::after{content:'';}
+.region-border{fill:none;stroke:#fff;stroke-width:1.5;pointer-events:none;}
+
+/* hover / active */
 g[data-region]:hover .prefecture{fill:#f4a0b0!important;stroke:#f4a0b0!important;}
 g[data-region].active .prefecture{fill:#f4a0b0!important;stroke:#f4a0b0!important;}
 
+/* 地区名标签 */
+.region-label{font-size:13px;font-weight:bold;fill:#fff;pointer-events:none;text-shadow:0 1px 3px rgba(0,60,80,.5);font-family:'Hiragino Sans','Noto Sans CJK SC',sans-serif;}
+
 /* 城市栏 */
-#city-panel{width:100%;max-width:500px;background:#fff;border-radius:0 0 16px 16px;margin-top:-4px;padding:14px 16px 16px;box-shadow:0 6px 20px rgba(0,0,0,.09);display:none;}
-#city-panel h3{font-size:15px;color:#4a8a9a;margin-bottom:10px;font-weight:600;}
+#city-panel{width:100%;max-width:500px;background:#fff;border-radius:0 0 16px 16px;margin-top:-4px;padding:14px 16px 18px;box-shadow:0 6px 20px rgba(0,0,0,.09);display:none;}
+#city-panel h3{font-size:15px;color:#2a8a9a;margin-bottom:10px;font-weight:600;}
 #city-list{display:flex;flex-wrap:wrap;gap:8px;}
-.city-btn{padding:6px 14px;border-radius:20px;background:#e8f5f7;color:#2a7a8a;font-size:13px;border:1px solid #b8dde5;cursor:pointer;text-decoration:none;transition:background .15s;}
-.city-btn:hover{background:#4db6d0;color:#fff;border-color:#4db6d0;}
+.city-btn{padding:6px 14px;border-radius:20px;background:#e2f5f8;color:#1a7a8a;font-size:13px;border:1px solid #aadde5;cursor:pointer;text-decoration:none;display:inline-block;transition:background .15s;}
+.city-btn:hover{background:#3aafc4;color:#fff;border-color:#3aafc4;}
 
-/* 版权（隐藏管理入口） */
-#footer{margin-top:18px;font-size:11px;color:#bbb;cursor:default;user-select:none;}
-
-/* ===== 管理面板 ===== */
-#admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;justify-content:center;align-items:center;}
-#admin-overlay.show{display:flex;}
-#admin-box{background:#fff;border-radius:14px;padding:24px;width:90%;max-width:480px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.2);}
-#admin-box h2{font-size:16px;color:#2a7a8a;margin-bottom:16px;}
-.admin-region{margin-bottom:18px;}
-.admin-region h4{font-size:13px;color:#4a8a9a;margin-bottom:8px;border-bottom:1px solid #e0f0f5;padding-bottom:4px;}
-.admin-city-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:13px;}
-.admin-city-row input[type=text]{flex:1;border:1px solid #cce;border-radius:6px;padding:4px 8px;font-size:12px;}
-.admin-city-row input[type=checkbox]{width:16px;height:16px;cursor:pointer;}
-#admin-save{margin-top:12px;background:#4db6d0;color:#fff;border:none;border-radius:8px;padding:8px 24px;font-size:14px;cursor:pointer;}
-#admin-save:hover{background:#3aa0bc;}
-#admin-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:#aaa;line-height:1;}
+/* 版权 */
+#footer{margin-top:16px;font-size:11px;color:#bbb;cursor:default;user-select:none;}
 
 /* 密码弹窗 */
 #pwd-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;justify-content:center;align-items:center;}
 #pwd-overlay.show{display:flex;}
 #pwd-box{background:#fff;border-radius:12px;padding:24px;width:280px;text-align:center;box-shadow:0 6px 30px rgba(0,0,0,.2);}
-#pwd-box h3{font-size:15px;color:#2a7a8a;margin-bottom:14px;}
-#pwd-input{width:100%;border:1px solid #cce;border-radius:8px;padding:8px 12px;font-size:15px;text-align:center;letter-spacing:4px;margin-bottom:10px;outline:none;}
-#pwd-submit{width:100%;background:#4db6d0;color:#fff;border:none;border-radius:8px;padding:8px;font-size:14px;cursor:pointer;}
+#pwd-box h3{font-size:15px;color:#2a8a9a;margin-bottom:14px;}
+#pwd-input{width:100%;border:1px solid #9dd;border-radius:8px;padding:8px 12px;font-size:15px;text-align:center;letter-spacing:4px;margin-bottom:10px;outline:none;}
+#pwd-submit{width:100%;background:#3aafc4;color:#fff;border:none;border-radius:8px;padding:8px;font-size:14px;cursor:pointer;}
 #pwd-error{color:#e06060;font-size:12px;margin-top:6px;display:none;}
-</style>
-</head>
+
+/* 管理面板 */
+#admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;justify-content:center;align-items:center;}
+#admin-overlay.show{display:flex;}
+#admin-box{background:#fff;border-radius:14px;padding:24px;width:90%;max-width:500px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.2);}
+#admin-box h2{font-size:16px;color:#2a8a9a;margin-bottom:16px;}
+.admin-region{margin-bottom:18px;}
+.admin-region h4{font-size:13px;color:#3a9ab0;margin-bottom:8px;border-bottom:1px solid #ddf0f5;padding-bottom:4px;}
+.admin-city-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:13px;}
+.admin-city-row input[type=text]{flex:1;border:1px solid #9dd;border-radius:6px;padding:4px 8px;font-size:12px;}
+.admin-city-row input[type=checkbox]{width:16px;height:16px;cursor:pointer;}
+#admin-save{margin-top:12px;background:#3aafc4;color:#fff;border:none;border-radius:8px;padding:8px 24px;font-size:14px;cursor:pointer;}
+#admin-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:#aaa;}
+</style></head>
 <body>
 
-<!-- 语言切换 -->
 <div id="lang-bar">
   <select id="lang-select">
     <option value="zh">简体中文</option>
@@ -79,7 +80,6 @@ g[data-region].active .prefecture{fill:#f4a0b0!important;stroke:#f4a0b0!importan
   </select>
 </div>
 
-<!-- 地图 -->
 <div class="map-card">
 <?xml version="1.0" encoding="utf-8"?>
 <svg class="geolonia-svg-map" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
@@ -307,26 +307,22 @@ g[data-region].active .prefecture{fill:#f4a0b0!important;stroke:#f4a0b0!importan
 
 </div>
 
-<!-- 城市栏（地图正下方） -->
 <div id="city-panel">
   <h3 id="city-panel-title"></h3>
   <div id="city-list"></div>
 </div>
 
-<!-- 隐藏版权入口（连点5次进入管理） -->
 <div id="footer">© Japan Travel Map</div>
 
-<!-- 密码弹窗 -->
 <div id="pwd-overlay">
   <div id="pwd-box">
     <h3>管理员登录</h3>
-    <input id="pwd-input" type="password" placeholder="请输入密码" maxlength="20"/>
+    <input id="pwd-input" type="password" placeholder="请输入密码" maxlength="30"/>
     <button id="pwd-submit">确认</button>
-    <div id="pwd-error">密码错误，请重试</div>
+    <div id="pwd-error">密码错误</div>
   </div>
 </div>
 
-<!-- 管理面板 -->
 <div id="admin-overlay">
   <div id="admin-box">
     <button id="admin-close">×</button>
@@ -337,180 +333,192 @@ g[data-region].active .prefecture{fill:#f4a0b0!important;stroke:#f4a0b0!importan
 </div>
 
 <script>
-// ===== 数据 =====
-const COLORS = {"hokkaido":"#4db6d0","tohoku":"#5bc8a0","kanto":"#7ecbbd","chubu":"#6ab8c8","kinki":"#89d4b8","chugoku":"#5aaec0","shikoku":"#7fd4c0","kyushu":"#4ca8c0","okinawa":"#6dc4b8"};
+const COLORS = {"hokkaido":"#4eb8cc","tohoku":"#5ac4c0","kanto":"#3aafc4","chubu":"#4dc4bc","kinki":"#2fa8c0","chugoku":"#52bec8","shikoku":"#3db8b8","kyushu":"#48c0c8","okinawa":"#5accc4"};
 const REGION_NAMES = {"hokkaido":{"zh":"北海道","zh-tw":"北海道","ja":"北海道","en":"Hokkaido","ko":"홋카이도","th":"ฮอกไกโด","vi":"Hokkaido"},"tohoku":{"zh":"东北","zh-tw":"東北","ja":"東北","en":"Tohoku","ko":"도호쿠","th":"โทโฮคุ","vi":"Tohoku"},"kanto":{"zh":"关东","zh-tw":"關東","ja":"関東","en":"Kanto","ko":"간토","th":"คันโต","vi":"Kanto"},"chubu":{"zh":"中部","zh-tw":"中部","ja":"中部","en":"Chubu","ko":"주부","th":"ชูบุ","vi":"Chubu"},"kinki":{"zh":"关西","zh-tw":"關西","ja":"近畿","en":"Kansai","ko":"간사이","th":"คินกิ","vi":"Kansai"},"chugoku":{"zh":"中国","zh-tw":"中國","ja":"中国","en":"Chugoku","ko":"주고쿠","th":"ชูโงกุ","vi":"Chugoku"},"shikoku":{"zh":"四国","zh-tw":"四國","ja":"四国","en":"Shikoku","ko":"시코쿠","th":"ชิโกกุ","vi":"Shikoku"},"kyushu":{"zh":"九州","zh-tw":"九州","ja":"九州","en":"Kyushu","ko":"규슈","th":"คิวชู","vi":"Kyushu"},"okinawa":{"zh":"冲绳","zh-tw":"沖繩","ja":"沖縄","en":"Okinawa","ko":"오키나와","th":"โอกินาวา","vi":"Okinawa"}};
-const LANG_LABELS = {"zh":"简体中文","zh-tw":"繁體中文","ja":"日本語","en":"English","ko":"한국어","th":"ภาษาไทย","vi":"Tiếng Việt"};
-const DEFAULT_CITIES = {"hokkaido":[{"name":{"zh":"札幌","en":"Sapporo","ja":"札幌","ko":"삿포로","zh-tw":"札幌","th":"ซัปโปโร","vi":"Sapporo"},"url":""}],"tohoku":[{"name":{"zh":"仙台","en":"Sendai","ja":"仙台","ko":"센다이","zh-tw":"仙台","th":"เซนได","vi":"Sendai"},"url":""}],"kanto":[{"name":{"zh":"东京","en":"Tokyo","ja":"東京","ko":"도쿄","zh-tw":"東京","th":"โตเกียว","vi":"Tokyo"},"url":""},{"name":{"zh":"横滨","en":"Yokohama","ja":"横浜","ko":"요코하마","zh-tw":"橫濱","th":"โยโกฮามา","vi":"Yokohama"},"url":""}],"chubu":[{"name":{"zh":"名古屋","en":"Nagoya","ja":"名古屋","ko":"나고야","zh-tw":"名古屋","th":"นาโกย่า","vi":"Nagoya"},"url":""}],"kinki":[{"name":{"zh":"大阪","en":"Osaka","ja":"大阪","ko":"오사카","zh-tw":"大阪","th":"โอซากา","vi":"Osaka"},"url":""},{"name":{"zh":"京都","en":"Kyoto","ja":"京都","ko":"교토","zh-tw":"京都","th":"เกียวโต","vi":"Kyoto"},"url":""}],"chugoku":[{"name":{"zh":"广岛","en":"Hiroshima","ja":"広島","ko":"히로시마","zh-tw":"廣島","th":"ฮิโรชิมา","vi":"Hiroshima"},"url":""}],"shikoku":[{"name":{"zh":"高松","en":"Takamatsu","ja":"高松","ko":"다카마쓰","zh-tw":"高松","th":"ทาคามัตสึ","vi":"Takamatsu"},"url":""}],"kyushu":[{"name":{"zh":"福冈","en":"Fukuoka","ja":"福岡","ko":"후쿠오카","zh-tw":"福岡","th":"ฟุกุโอกะ","vi":"Fukuoka"},"url":""}],"okinawa":[{"name":{"zh":"那霸","en":"Naha","ja":"那覇","ko":"나하","zh-tw":"那霸","th":"นาฮา","vi":"Naha"},"url":""}]};
+const DEFAULT_CITIES = {"hokkaido":[{"name":{"zh":"札幌","zh-tw":"札幌","ja":"札幌","en":"Sapporo","ko":"삿포로","th":"ซัปโปโร","vi":"Sapporo"},"url":""},{"name":{"zh":"函馆","zh-tw":"函館","ja":"函館","en":"Hakodate","ko":"하코다테","th":"ฮาโกดาเตะ","vi":"Hakodate"},"url":""},{"name":{"zh":"旭川","zh-tw":"旭川","ja":"旭川","en":"Asahikawa","ko":"아사히카와","th":"อาซาฮิกาวะ","vi":"Asahikawa"},"url":""},{"name":{"zh":"小樽","zh-tw":"小樽","ja":"小樽","en":"Otaru","ko":"오타루","th":"โอตารุ","vi":"Otaru"},"url":""},{"name":{"zh":"富良野","zh-tw":"富良野","ja":"富良野","en":"Furano","ko":"후라노","th":"ฟุราโนะ","vi":"Furano"},"url":""},{"name":{"zh":"知床","zh-tw":"知床","ja":"知床","en":"Shiretoko","ko":"시레토코","th":"ชิเรโตโกะ","vi":"Shiretoko"},"url":""},{"name":{"zh":"✈ 新千岁机场","zh-tw":"✈ 新千歲機場","ja":"✈ 新千歳空港","en":"✈ New Chitose Airport","ko":"✈ 신치토세공항","th":"✈ สนามบินชิโตเสะใหม่","vi":"✈ Sân bay Chitose"},"url":""},{"name":{"zh":"✈ 函馆机场","zh-tw":"✈ 函館機場","ja":"✈ 函館空港","en":"✈ Hakodate Airport","ko":"✈ 하코다테공항","th":"✈ สนามบินฮาโกดาเตะ","vi":"✈ Sân bay Hakodate"},"url":""}],"tohoku":[{"name":{"zh":"仙台","zh-tw":"仙台","ja":"仙台","en":"Sendai","ko":"센다이","th":"เซนได","vi":"Sendai"},"url":""},{"name":{"zh":"青森","zh-tw":"青森","ja":"青森","en":"Aomori","ko":"아오모리","th":"อาโอโมริ","vi":"Aomori"},"url":""},{"name":{"zh":"盛冈","zh-tw":"盛岡","ja":"盛岡","en":"Morioka","ko":"모리오카","th":"โมริโอกะ","vi":"Morioka"},"url":""},{"name":{"zh":"秋田","zh-tw":"秋田","ja":"秋田","en":"Akita","ko":"아키타","th":"อาคิตะ","vi":"Akita"},"url":""},{"name":{"zh":"山形","zh-tw":"山形","ja":"山形","en":"Yamagata","ko":"야마가타","th":"ยามากาตะ","vi":"Yamagata"},"url":""},{"name":{"zh":"福岛","zh-tw":"福島","ja":"福島","en":"Fukushima","ko":"후쿠시마","th":"ฟุกุชิมะ","vi":"Fukushima"},"url":""},{"name":{"zh":"✈ 仙台机场","zh-tw":"✈ 仙台機場","ja":"✈ 仙台空港","en":"✈ Sendai Airport","ko":"✈ 센다이공항","th":"✈ สนามบินเซนได","vi":"✈ Sân bay Sendai"},"url":""},{"name":{"zh":"✈ 青森机场","zh-tw":"✈ 青森機場","ja":"✈ 青森空港","en":"✈ Aomori Airport","ko":"✈ 아오모리공항","th":"✈ สนามบินอาโอโมริ","vi":"✈ Sân bay Aomori"},"url":""}],"kanto":[{"name":{"zh":"东京","zh-tw":"東京","ja":"東京","en":"Tokyo","ko":"도쿄","th":"โตเกียว","vi":"Tokyo"},"url":""},{"name":{"zh":"横滨","zh-tw":"橫濱","ja":"横浜","en":"Yokohama","ko":"요코하마","th":"โยโกฮามา","vi":"Yokohama"},"url":""},{"name":{"zh":"镰仓","zh-tw":"鎌倉","ja":"鎌倉","en":"Kamakura","ko":"가마쿠라","th":"คามากุระ","vi":"Kamakura"},"url":""},{"name":{"zh":"日光","zh-tw":"日光","ja":"日光","en":"Nikko","ko":"닛코","th":"นิกโก้","vi":"Nikko"},"url":""},{"name":{"zh":"箱根","zh-tw":"箱根","ja":"箱根","en":"Hakone","ko":"하코네","th":"ฮาโกเน่","vi":"Hakone"},"url":""},{"name":{"zh":"千叶","zh-tw":"千葉","ja":"千葉","en":"Chiba","ko":"치바","th":"ชิบะ","vi":"Chiba"},"url":""},{"name":{"zh":"✈ 成田国际机场","zh-tw":"✈ 成田國際機場","ja":"✈ 成田国際空港","en":"✈ Narita Intl Airport","ko":"✈ 나리타공항","th":"✈ สนามบินนาริตะ","vi":"✈ Sân bay Narita"},"url":""},{"name":{"zh":"✈ 羽田机场","zh-tw":"✈ 羽田機場","ja":"✈ 羽田空港","en":"✈ Haneda Airport","ko":"✈ 하네다공항","th":"✈ สนามบินฮาเนดะ","vi":"✈ Sân bay Haneda"},"url":""}],"chubu":[{"name":{"zh":"名古屋","zh-tw":"名古屋","ja":"名古屋","en":"Nagoya","ko":"나고야","th":"นาโกย่า","vi":"Nagoya"},"url":""},{"name":{"zh":"金泽","zh-tw":"金澤","ja":"金沢","en":"Kanazawa","ko":"가나자와","th":"คานาซาวะ","vi":"Kanazawa"},"url":""},{"name":{"zh":"富士山","zh-tw":"富士山","ja":"富士山","en":"Mt. Fuji","ko":"후지산","th":"ภูเขาไฟฟูจิ","vi":"Núi Fuji"},"url":""},{"name":{"zh":"松本","zh-tw":"松本","ja":"松本","en":"Matsumoto","ko":"마츠모토","th":"มัตสึโมโตะ","vi":"Matsumoto"},"url":""},{"name":{"zh":"静冈","zh-tw":"靜岡","ja":"静岡","en":"Shizuoka","ko":"시즈오카","th":"ชิซุโอกะ","vi":"Shizuoka"},"url":""},{"name":{"zh":"高山","zh-tw":"高山","ja":"高山","en":"Takayama","ko":"다카야마","th":"ทาคายามะ","vi":"Takayama"},"url":""},{"name":{"zh":"✈ 中部国际机场","zh-tw":"✈ 中部國際機場","ja":"✈ 中部国際空港","en":"✈ Chubu Centrair Airport","ko":"✈ 주부공항","th":"✈ สนามบินชูบุ","vi":"✈ Sân bay Chubu"},"url":""},{"name":{"zh":"✈ 小松机场","zh-tw":"✈ 小松機場","ja":"✈ 小松空港","en":"✈ Komatsu Airport","ko":"✈ 고마쓰공항","th":"✈ สนามบินโคมัตสึ","vi":"✈ Sân bay Komatsu"},"url":""}],"kinki":[{"name":{"zh":"大阪","zh-tw":"大阪","ja":"大阪","en":"Osaka","ko":"오사카","th":"โอซากา","vi":"Osaka"},"url":""},{"name":{"zh":"京都","zh-tw":"京都","ja":"京都","en":"Kyoto","ko":"교토","th":"เกียวโต","vi":"Kyoto"},"url":""},{"name":{"zh":"神户","zh-tw":"神戶","ja":"神戸","en":"Kobe","ko":"고베","th":"โกเบะ","vi":"Kobe"},"url":""},{"name":{"zh":"奈良","zh-tw":"奈良","ja":"奈良","en":"Nara","ko":"나라","th":"นารา","vi":"Nara"},"url":""},{"name":{"zh":"和歌山","zh-tw":"和歌山","ja":"和歌山","en":"Wakayama","ko":"와카야마","th":"วากายามะ","vi":"Wakayama"},"url":""},{"name":{"zh":"姬路","zh-tw":"姬路","ja":"姫路","en":"Himeji","ko":"히메지","th":"ฮิเมจิ","vi":"Himeji"},"url":""},{"name":{"zh":"✈ 关西国际机场","zh-tw":"✈ 關西國際機場","ja":"✈ 関西国際空港","en":"✈ Kansai Intl Airport","ko":"✈ 간사이공항","th":"✈ สนามบินคันไซ","vi":"✈ Sân bay Kansai"},"url":""},{"name":{"zh":"✈ 大阪伊丹机场","zh-tw":"✈ 大阪伊丹機場","ja":"✈ 大阪伊丹空港","en":"✈ Osaka Itami Airport","ko":"✈ 이타미공항","th":"✈ สนามบินอิตามิ","vi":"✈ Sân bay Itami"},"url":""}],"chugoku":[{"name":{"zh":"广岛","zh-tw":"廣島","ja":"広島","en":"Hiroshima","ko":"히로시마","th":"ฮิโรชิมา","vi":"Hiroshima"},"url":""},{"name":{"zh":"岡山","zh-tw":"岡山","ja":"岡山","en":"Okayama","ko":"오카야마","th":"โอคายามะ","vi":"Okayama"},"url":""},{"name":{"zh":"松江","zh-tw":"松江","ja":"松江","en":"Matsue","ko":"마쓰에","th":"มัตสึเอะ","vi":"Matsue"},"url":""},{"name":{"zh":"鸟取砂丘","zh-tw":"鳥取砂丘","ja":"鳥取砂丘","en":"Tottori Sand Dunes","ko":"돗토리사구","th":"เนินทรายทตโตริ","vi":"Đụn cát Tottori"},"url":""},{"name":{"zh":"宫岛","zh-tw":"宮島","ja":"宮島","en":"Miyajima","ko":"미야지마","th":"มิยาจิมะ","vi":"Miyajima"},"url":""},{"name":{"zh":"✈ 广岛机场","zh-tw":"✈ 廣島機場","ja":"✈ 広島空港","en":"✈ Hiroshima Airport","ko":"✈ 히로시마공항","th":"✈ สนามบินฮิโรชิมา","vi":"✈ Sân bay Hiroshima"},"url":""},{"name":{"zh":"✈ 冈山机场","zh-tw":"✈ 岡山機場","ja":"✈ 岡山空港","en":"✈ Okayama Airport","ko":"✈ 오카야마공항","th":"✈ สนามบินโอคายามะ","vi":"✈ Sân bay Okayama"},"url":""}],"shikoku":[{"name":{"zh":"高松","zh-tw":"高松","ja":"高松","en":"Takamatsu","ko":"다카마쓰","th":"ทาคามัตสึ","vi":"Takamatsu"},"url":""},{"name":{"zh":"松山","zh-tw":"松山","ja":"松山","en":"Matsuyama","ko":"마쓰야마","th":"มัตสึยามะ","vi":"Matsuyama"},"url":""},{"name":{"zh":"高知","zh-tw":"高知","ja":"高知","en":"Kochi","ko":"고치","th":"โคจิ","vi":"Kochi"},"url":""},{"name":{"zh":"德岛","zh-tw":"德島","ja":"徳島","en":"Tokushima","ko":"도쿠시마","th":"โทคุชิมะ","vi":"Tokushima"},"url":""},{"name":{"zh":"道后温泉","zh-tw":"道後溫泉","ja":"道後温泉","en":"Dogo Onsen","ko":"도고온천","th":"โดโก ออนเซ็น","vi":"Dogo Onsen"},"url":""},{"name":{"zh":"✈ 高松机场","zh-tw":"✈ 高松機場","ja":"✈ 高松空港","en":"✈ Takamatsu Airport","ko":"✈ 다카마쓰공항","th":"✈ สนามบินทาคามัตสึ","vi":"✈ Sân bay Takamatsu"},"url":""},{"name":{"zh":"✈ 松山机场","zh-tw":"✈ 松山機場","ja":"✈ 松山空港","en":"✈ Matsuyama Airport","ko":"✈ 마쓰야마공항","th":"✈ สนามบินมัตสึยามะ","vi":"✈ Sân bay Matsuyama"},"url":""}],"kyushu":[{"name":{"zh":"福冈","zh-tw":"福岡","ja":"福岡","en":"Fukuoka","ko":"후쿠오카","th":"ฟุกุโอกะ","vi":"Fukuoka"},"url":""},{"name":{"zh":"长崎","zh-tw":"長崎","ja":"長崎","en":"Nagasaki","ko":"나가사키","th":"นางาซากิ","vi":"Nagasaki"},"url":""},{"name":{"zh":"熊本","zh-tw":"熊本","ja":"熊本","en":"Kumamoto","ko":"구마모토","th":"คุมาโมโตะ","vi":"Kumamoto"},"url":""},{"name":{"zh":"鹿儿岛","zh-tw":"鹿兒島","ja":"鹿児島","en":"Kagoshima","ko":"가고시마","th":"คาโกชิมะ","vi":"Kagoshima"},"url":""},{"name":{"zh":"别府","zh-tw":"別府","ja":"別府","en":"Beppu","ko":"벳부","th":"เบปปุ","vi":"Beppu"},"url":""},{"name":{"zh":"由布院","zh-tw":"由布院","ja":"由布院","en":"Yufuin","ko":"유후인","th":"ยูฟุอิน","vi":"Yufuin"},"url":""},{"name":{"zh":"佐世保","zh-tw":"佐世保","ja":"佐世保","en":"Sasebo","ko":"사세보","th":"ซาเซโบะ","vi":"Sasebo"},"url":""},{"name":{"zh":"✈ 福冈机场","zh-tw":"✈ 福岡機場","ja":"✈ 福岡空港","en":"✈ Fukuoka Airport","ko":"✈ 후쿠오카공항","th":"✈ สนามบินฟุกุโอกะ","vi":"✈ Sân bay Fukuoka"},"url":""},{"name":{"zh":"✈ 长崎机场","zh-tw":"✈ 長崎機場","ja":"✈ 長崎空港","en":"✈ Nagasaki Airport","ko":"✈ 나가사키공항","th":"✈ สนามบินนางาซากิ","vi":"✈ Sân bay Nagasaki"},"url":""},{"name":{"zh":"✈ 鹿儿岛机场","zh-tw":"✈ 鹿兒島機場","ja":"✈ 鹿児島空港","en":"✈ Kagoshima Airport","ko":"✈ 가고시마공항","th":"✈ สนามบินคาโกชิมะ","vi":"✈ Sân bay Kagoshima"},"url":""}],"okinawa":[{"name":{"zh":"那霸","zh-tw":"那霸","ja":"那覇","en":"Naha","ko":"나하","th":"นาฮา","vi":"Naha"},"url":""},{"name":{"zh":"美国村","zh-tw":"美國村","ja":"アメリカンビレッジ","en":"American Village","ko":"아메리칸 빌리지","th":"อเมริกันวิลเลจ","vi":"American Village"},"url":""},{"name":{"zh":"古宇利岛","zh-tw":"古宇利島","ja":"古宇利島","en":"Kouri Island","ko":"고우리섬","th":"เกาะโคอุริ","vi":"Đảo Kouri"},"url":""},{"name":{"zh":"冲绳美丽海水族馆","zh-tw":"沖繩美麗海水族館","ja":"美ら海水族館","en":"Churaumi Aquarium","ko":"추라우미수족관","th":"พิพิธภัณฑ์สัตว์น้ำชูราอูมิ","vi":"Thủy cung Churaumi"},"url":""},{"name":{"zh":"首里城","zh-tw":"首里城","ja":"首里城","en":"Shuri Castle","ko":"슈리성","th":"ปราสาทชูริ","vi":"Lâu đài Shuri"},"url":""},{"name":{"zh":"✈ 那霸机场","zh-tw":"✈ 那霸機場","ja":"✈ 那覇空港","en":"✈ Naha Airport","ko":"✈ 나하공항","th":"✈ สนามบินนาฮา","vi":"✈ Sân bay Naha"},"url":""},{"name":{"zh":"✈ 宫古岛机场","zh-tw":"✈ 宮古島機場","ja":"✈ 宮古空港","en":"✈ Miyako Airport","ko":"✈ 미야코공항","th":"✈ สนามบินมิยาโกะ","vi":"✈ Sân bay Miyako"},"url":""}]};
+const LABEL_POS = {"hokkaido":[760,110],"tohoku":[720,280],"kanto":[740,430],"chubu":[610,430],"kinki":[530,490],"chugoku":[420,500],"shikoku":[490,570],"kyushu":[330,570],"okinawa":[130,870]};
 const REGIONS = Object.keys(REGION_NAMES);
 const ADMIN_PWD = 'Gaibian0821ll';
 
-// ===== 语言检测 =====
-function detectLang() {
-  const nav = navigator.language || 'zh';
-  const l = nav.toLowerCase();
-  if (l.startsWith('zh-tw') || l.startsWith('zh-hk')) return 'zh-tw';
-  if (l.startsWith('zh')) return 'zh';
-  if (l.startsWith('ja')) return 'ja';
-  if (l.startsWith('ko')) return 'ko';
-  if (l.startsWith('th')) return 'th';
-  if (l.startsWith('vi')) return 'vi';
-  if (l.startsWith('en')) return 'en';
-  return 'zh';
+// 语言检测
+function detectLang(){
+  const l=(navigator.language||'zh').toLowerCase();
+  if(l.startsWith('zh-tw')||l.startsWith('zh-hk'))return 'zh-tw';
+  if(l.startsWith('zh'))return 'zh';
+  if(l.startsWith('ja'))return 'ja';
+  if(l.startsWith('ko'))return 'ko';
+  if(l.startsWith('th'))return 'th';
+  if(l.startsWith('vi'))return 'vi';
+  return 'en';
 }
 let currentLang = detectLang();
 document.getElementById('lang-select').value = currentLang;
-document.getElementById('lang-select').addEventListener('change', e => {
+document.getElementById('lang-select').addEventListener('change', e=>{
   currentLang = e.target.value;
-  if (selectedRegion) showCities(selectedRegion);
+  updateLabels();
+  if(selectedRegion) showCities(selectedRegion);
 });
 
-// ===== 城市数据（从 localStorage 读，没有则用默认） =====
-function getCities() {
-  try { return JSON.parse(localStorage.getItem('jp_cities')) || DEFAULT_CITIES; }
-  catch { return DEFAULT_CITIES; }
-}
-function saveCities(data) {
-  localStorage.setItem('jp_cities', JSON.stringify(data));
-}
+// 城市数据
+function getCities(){ try{ return JSON.parse(localStorage.getItem('jp_cities'))||DEFAULT_CITIES; }catch{ return DEFAULT_CITIES; } }
+function saveCities(d){ localStorage.setItem('jp_cities',JSON.stringify(d)); }
 
-// ===== 地图：按地区分组 =====
+// 地区分组
 const prefGs = document.querySelectorAll('g.prefecture');
 const groups = {};
-REGIONS.forEach(r => groups[r] = []);
-prefGs.forEach(g => {
-  const cls = Array.from(g.classList);
-  const region = REGIONS.find(r => cls.includes(r));
-  if (region) groups[region].push(g);
+REGIONS.forEach(r=>groups[r]=[]);
+prefGs.forEach(g=>{
+  const cls=Array.from(g.classList);
+  const region=REGIONS.find(r=>cls.includes(r));
+  if(region) groups[region].push(g);
 });
 
-let selectedRegion = null;
-REGIONS.forEach(region => {
-  const nodes = groups[region];
-  if (!nodes.length) return;
-  const wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-  wrapper.setAttribute('data-region', region);
-  nodes[0].parentNode.insertBefore(wrapper, nodes[0]);
-  nodes.forEach(n => wrapper.appendChild(n));
-  wrapper.addEventListener('click', () => selectRegion(region));
+let selectedRegion=null;
+const svg = document.querySelector('svg.geolonia-svg-map');
+
+REGIONS.forEach(region=>{
+  const nodes=groups[region];
+  if(!nodes.length)return;
+  const wrapper=document.createElementNS('http://www.w3.org/2000/svg','g');
+  wrapper.setAttribute('data-region',region);
+  nodes[0].parentNode.insertBefore(wrapper,nodes[0]);
+  nodes.forEach(n=>wrapper.appendChild(n));
+  wrapper.addEventListener('click',()=>selectRegion(region));
 });
 
-function selectRegion(region) {
-  selectedRegion = region;
-  document.querySelectorAll('g[data-region]').forEach(g => g.classList.remove('active'));
-  document.querySelector('g[data-region="' + region + '"]').classList.add('active');
+// 地区边界白色细线（在每个 wrapper 上叠一个同路径描边层）
+// 用 SVG rect 覆盖整个地区组，实际上我们靠相邻地区间颜色差 + 地区 wrapper 上加白色 outline
+// 最简单可靠：给每个 prefecture path 加白色 stroke，但 stroke-width 要小
+// 已在 CSS 里处理：同色 stroke 消除县界，地区间自然有颜色差异
+// 额外加一层：给 wrapper 加一个 SVG outline rect 不可行
+// 改为：在地区 wrapper 的所有 path 上，追加一个克隆层只做白色描边
+REGIONS.forEach(region=>{
+  const wrapper = document.querySelector('g[data-region="'+region+'"]');
+  if(!wrapper)return;
+  const paths = Array.from(wrapper.querySelectorAll('path'));
+  paths.forEach(p=>{
+    const clone = p.cloneNode(false);
+    clone.setAttribute('fill','none');
+    clone.setAttribute('stroke','#fff');
+    clone.setAttribute('stroke-width','1.5');
+    clone.style.pointerEvents='none';
+    wrapper.appendChild(clone);
+  });
+});
+
+// 地区名标签
+const labelGroup = document.createElementNS('http://www.w3.org/2000/svg','g');
+labelGroup.id = 'region-labels';
+svg.appendChild(labelGroup);
+
+function updateLabels(){
+  labelGroup.innerHTML='';
+  REGIONS.forEach(region=>{
+    const pos = LABEL_POS[region];
+    if(!pos)return;
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x', pos[0]);
+    t.setAttribute('y', pos[1]);
+    t.setAttribute('text-anchor','middle');
+    t.setAttribute('dominant-baseline','middle');
+    t.setAttribute('class','region-label');
+    t.textContent = REGION_NAMES[region][currentLang]||REGION_NAMES[region]['zh'];
+    labelGroup.appendChild(t);
+  });
+}
+updateLabels();
+
+function selectRegion(region){
+  selectedRegion=region;
+  document.querySelectorAll('g[data-region]').forEach(g=>g.classList.remove('active'));
+  document.querySelector('g[data-region="'+region+'"]').classList.add('active');
   showCities(region);
 }
 
-// ===== 城市栏 =====
-function showCities(region) {
-  const panel = document.getElementById('city-panel');
-  const title = document.getElementById('city-panel-title');
-  const list  = document.getElementById('city-list');
-  const cities = getCities();
-  const regionCities = (cities[region] || []).filter(c => c.visible !== false);
-
-  title.textContent = REGION_NAMES[region][currentLang] || region;
-  list.innerHTML = '';
-
-  if (regionCities.length === 0) {
-    list.innerHTML = '<span style="color:#aaa;font-size:13px;">暂无城市</span>';
-  } else {
-    regionCities.forEach(c => {
-      const name = typeof c.name === 'object' ? (c.name[currentLang] || c.name.zh || c.name.en) : c.name;
-      const el = c.url
-        ? Object.assign(document.createElement('a'), {href: c.url, target:'_blank', textContent: name, className:'city-btn'})
-        : Object.assign(document.createElement('span'), {textContent: name, className:'city-btn'});
+function showCities(region){
+  const panel=document.getElementById('city-panel');
+  const title=document.getElementById('city-panel-title');
+  const list=document.getElementById('city-list');
+  const cities=getCities();
+  const rc=(cities[region]||[]).filter(c=>c.visible!==false);
+  title.textContent=REGION_NAMES[region][currentLang]||region;
+  list.innerHTML='';
+  if(!rc.length){ list.innerHTML='<span style="color:#aaa;font-size:13px;">暂无城市</span>'; }
+  else {
+    rc.forEach(c=>{
+      const name=typeof c.name==='object'?(c.name[currentLang]||c.name.zh||c.name.en):c.name;
+      const el=c.url
+        ?Object.assign(document.createElement('a'),{href:c.url,target:'_blank',textContent:name,className:'city-btn'})
+        :Object.assign(document.createElement('span'),{textContent:name,className:'city-btn'});
       list.appendChild(el);
     });
   }
-  panel.style.display = 'block';
+  panel.style.display='block';
 }
 
-// ===== 隐藏管理入口：连点版权文字5次 =====
-let clickCount = 0, clickTimer;
-document.getElementById('footer').addEventListener('click', () => {
-  clickCount++;
-  clearTimeout(clickTimer);
-  clickTimer = setTimeout(() => clickCount = 0, 2000);
-  if (clickCount >= 5) {
-    clickCount = 0;
-    showPwdDialog();
-  }
+// 隐藏入口：连点版权5次
+let cc=0,ct;
+document.getElementById('footer').addEventListener('click',()=>{
+  cc++; clearTimeout(ct); ct=setTimeout(()=>cc=0,2000);
+  if(cc>=5){ cc=0; showPwd(); }
 });
 
-// ===== 密码弹窗 =====
-function showPwdDialog() {
-  const overlay = document.getElementById('pwd-overlay');
-  overlay.classList.add('show');
-  document.getElementById('pwd-input').value = '';
-  document.getElementById('pwd-error').style.display = 'none';
-  document.getElementById('pwd-input').focus();
+function showPwd(){
+  document.getElementById('pwd-overlay').classList.add('show');
+  document.getElementById('pwd-input').value='';
+  document.getElementById('pwd-error').style.display='none';
+  setTimeout(()=>document.getElementById('pwd-input').focus(),100);
 }
-document.getElementById('pwd-submit').addEventListener('click', checkPwd);
-document.getElementById('pwd-input').addEventListener('keydown', e => { if(e.key==='Enter') checkPwd(); });
-function checkPwd() {
-  const val = document.getElementById('pwd-input').value;
-  if (val === ADMIN_PWD) {
+document.getElementById('pwd-submit').addEventListener('click',checkPwd);
+document.getElementById('pwd-input').addEventListener('keydown',e=>{if(e.key==='Enter')checkPwd();});
+function checkPwd(){
+  if(document.getElementById('pwd-input').value===ADMIN_PWD){
     document.getElementById('pwd-overlay').classList.remove('show');
     showAdmin();
-  } else {
-    document.getElementById('pwd-error').style.display = 'block';
-  }
+  } else { document.getElementById('pwd-error').style.display='block'; }
 }
-document.getElementById('pwd-overlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('pwd-overlay'))
-    document.getElementById('pwd-overlay').classList.remove('show');
+document.getElementById('pwd-overlay').addEventListener('click',e=>{
+  if(e.target===document.getElementById('pwd-overlay')) document.getElementById('pwd-overlay').classList.remove('show');
 });
 
-// ===== 管理面板 =====
-function showAdmin() {
-  const overlay = document.getElementById('admin-overlay');
-  const content = document.getElementById('admin-content');
-  overlay.classList.add('show');
-  const cities = getCities();
-  content.innerHTML = '';
-
-  REGIONS.forEach(region => {
-    const regionCities = cities[region] || [];
-    const div = document.createElement('div');
-    div.className = 'admin-region';
-    div.innerHTML = '<h4>' + (REGION_NAMES[region]['zh'] || region) + '</h4>';
-    regionCities.forEach((city, idx) => {
-      const name = typeof city.name === 'object' ? city.name.zh : city.name;
-      const row = document.createElement('div');
-      row.className = 'admin-city-row';
-      row.innerHTML =
-        '<input type="checkbox" ' + (city.visible !== false ? 'checked' : '') + ' data-region="' + region + '" data-idx="' + idx + '" data-field="visible">' +
-        '<span style="min-width:56px;color:#444;">' + name + '</span>' +
-        '<input type="text" placeholder="链接URL" value="' + (city.url||'') + '" data-region="' + region + '" data-idx="' + idx + '" data-field="url">';
+function showAdmin(){
+  document.getElementById('admin-overlay').classList.add('show');
+  const content=document.getElementById('admin-content');
+  const cities=getCities();
+  content.innerHTML='';
+  REGIONS.forEach(region=>{
+    const rc=cities[region]||[];
+    const div=document.createElement('div');
+    div.className='admin-region';
+    div.innerHTML='<h4>'+(REGION_NAMES[region]['zh']||region)+'</h4>';
+    rc.forEach((city,idx)=>{
+      const name=typeof city.name==='object'?(city.name.zh||city.name.en):city.name;
+      const row=document.createElement('div');
+      row.className='admin-city-row';
+      row.innerHTML='<input type="checkbox"'+(city.visible!==false?' checked':'')+' data-region="'+region+'" data-idx="'+idx+'" data-field="visible">'+
+        '<span style="min-width:70px;color:#444;font-size:12px;">'+name+'</span>'+
+        '<input type="text" placeholder="链接URL" value="'+(city.url||'')+'" data-region="'+region+'" data-idx="'+idx+'" data-field="url">';
       div.appendChild(row);
     });
     content.appendChild(div);
   });
 }
-
-document.getElementById('admin-close').addEventListener('click', () => {
-  document.getElementById('admin-overlay').classList.remove('show');
-});
-document.getElementById('admin-save').addEventListener('click', () => {
-  const cities = getCities();
-  document.querySelectorAll('.admin-city-row input[data-field="visible"]').forEach(cb => {
-    const r = cb.dataset.region, i = parseInt(cb.dataset.idx);
-    cities[r][i].visible = cb.checked;
+document.getElementById('admin-close').addEventListener('click',()=>document.getElementById('admin-overlay').classList.remove('show'));
+document.getElementById('admin-save').addEventListener('click',()=>{
+  const cities=getCities();
+  document.querySelectorAll('.admin-city-row input[data-field="visible"]').forEach(cb=>{
+    cities[cb.dataset.region][parseInt(cb.dataset.idx)].visible=cb.checked;
   });
-  document.querySelectorAll('.admin-city-row input[data-field="url"]').forEach(inp => {
-    const r = inp.dataset.region, i = parseInt(inp.dataset.idx);
-    cities[r][i].url = inp.value.trim();
+  document.querySelectorAll('.admin-city-row input[data-field="url"]').forEach(inp=>{
+    cities[inp.dataset.region][parseInt(inp.dataset.idx)].url=inp.value.trim();
   });
   saveCities(cities);
   document.getElementById('admin-overlay').classList.remove('show');
-  if (selectedRegion) showCities(selectedRegion);
+  if(selectedRegion)showCities(selectedRegion);
   alert('已保存！');
 });
-document.getElementById('admin-overlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('admin-overlay'))
-    document.getElementById('admin-overlay').classList.remove('show');
+document.getElementById('admin-overlay').addEventListener('click',e=>{
+  if(e.target===document.getElementById('admin-overlay')) document.getElementById('admin-overlay').classList.remove('show');
 });
 </script>
 </body></html>
