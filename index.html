@@ -425,11 +425,9 @@ function showCities(r){
 if(location.search.includes('admin')){
   document.getElementById('pwd-overlay').classList.add('show');
 }
-// 方式2：底部文字快速点3下
-let cc=0,ct;
-document.getElementById('footer').addEventListener('click',()=>{
-  cc++; clearTimeout(ct); ct=setTimeout(()=>cc=0,2000);
-  if(cc>=3){ cc=0; document.getElementById('pwd-overlay').classList.add('show'); }
+// 方式2：底部文字双击触发
+document.getElementById('footer').addEventListener('dblclick',()=>{
+  document.getElementById('pwd-overlay').classList.add('show');
 });
 document.getElementById('pwd-submit').addEventListener('click',()=>{
   if(document.getElementById('pwd-input').value===ADMIN_PWD){
