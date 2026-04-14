@@ -28,9 +28,7 @@ svg.geolonia-svg-map.ready{opacity:1;}
 [data-region="okinawa"]  .prefecture{fill:#5accc4!important;stroke:#5accc4!important;stroke-width:1!important;}
 
 g[data-region]{cursor:pointer;-webkit-tap-highlight-color:transparent;}
-.prefecture{transition:fill 0.08s ease;will-change:fill,stroke;}
-g[data-region]:hover .prefecture{fill:#f4a0b0!important;stroke:#f4a0b0!important;}
-g[data-region].active .prefecture{fill:#f4a0b0!important;stroke:#f4a0b0!important;}
+.prefecture{transition:none;}
 
 .region-label{font-size:26px;font-weight:bold;fill:#fff;pointer-events:none;text-shadow:0 1px 4px rgba(0,60,80,.6);font-family:'Hiragino Sans','Noto Sans CJK SC',sans-serif;will-change:transform;}
 
@@ -394,12 +392,20 @@ function updateLabels(){
 }
 
 const regionEls={};
-REGIONS.forEach(r=>{ regionEls[r]=document.querySelector('g[data-region="'+r+'"]'); });
+const regionPaths={};
+REGIONS.forEach(r=>{
+  regionEls[r]=document.querySelector('g[data-region="'+r+'"]');
+  regionPaths[r]=regionEls[r]?Array.from(regionEls[r].querySelectorAll('path')):[];
+});
+
+function setRegionColor(r,color){
+  regionPaths[r].forEach(p=>{ p.style.fill=color; p.style.stroke=color; });
+}
 
 function selectRegion(r){
-  if(selectedRegion && regionEls[selectedRegion]) regionEls[selectedRegion].classList.remove('active');
+  if(selectedRegion) setRegionColor(selectedRegion, COLORS[selectedRegion]);
   selectedRegion=r;
-  if(regionEls[r]) regionEls[r].classList.add('active');
+  setRegionColor(r,'#f4a0b0');
   showCities(r);
 }
 
