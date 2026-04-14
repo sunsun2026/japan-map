@@ -7,13 +7,13 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:linear-gradient(160deg,#1a1a1a 0%,#2d2d2d 50%,#1a1a1a 100%);font-family:'Hiragino Sans','Noto Sans CJK SC',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:15px 10px 40px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 
-#header-bar{width:100%;max-width:500px;display:flex;justify-content:center;align-items:center;margin-bottom:12px;padding:0 4px;position:relative;}
-#tip-text{font-size:13px;color:#f4a0b0;font-weight:700;text-align:center;flex:1;letter-spacing:0.3px;}
-.lang-wrapper{position:absolute;right:8px;top:50%;transform:translateY(-50%);cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;}
+#header-bar{width:100%;max-width:625px;display:flex;flex-direction:column;align-items:center;margin-bottom:12px;padding:0 4px;gap:8px;}
+#tip-text{font-size:13px;color:#fff;font-weight:700;text-align:center;width:100%;letter-spacing:0.3px;}
+.lang-wrapper{cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;position:relative;}
 .lang-icon{font-size:22px;}
 #lang-select{opacity:0;position:absolute;inset:0;cursor:pointer;width:100%;height:100%;}
 
-.map-card{background:#fff;border-radius:16px;border:2px solid #fff;box-shadow:0 0 0 2px #fff;padding:16px;width:100%;max-width:500px;will-change:transform;contain:paint;}
+.map-card{background:#fff;border-radius:16px;border:2px solid #fff;box-shadow:0 0 0 2px #fff;padding:16px;width:100%;max-width:625px;will-change:transform;contain:paint;}
 svg.geolonia-svg-map{width:100%;height:auto;display:block;shape-rendering:optimizeSpeed;opacity:0;transition:opacity 0.2s ease;}
 svg.geolonia-svg-map.ready{opacity:1;}
 
@@ -28,11 +28,13 @@ svg.geolonia-svg-map.ready{opacity:1;}
 [data-region="okinawa"]  .prefecture{fill:#5accc4!important;stroke:#5accc4!important;stroke-width:1!important;}
 
 g[data-region]{cursor:pointer;-webkit-tap-highlight-color:transparent;}
-.prefecture{transition:none;}
+.prefecture{transition:fill 0.08s ease;}
+g[data-region]:hover .prefecture{fill:#f4a0b0!important;stroke:#f4a0b0!important;}
+g[data-region].active .prefecture{fill:#f4a0b0!important;stroke:#f4a0b0!important;}
 
 .region-label{font-size:26px;font-weight:bold;fill:#fff;pointer-events:none;text-shadow:0 1px 4px rgba(0,60,80,.6);font-family:'Hiragino Sans','Noto Sans CJK SC',sans-serif;will-change:transform;}
 
-#city-panel{width:100%;max-width:500px;background:#222;border-radius:0 0 16px 16px;margin-top:-4px;padding:14px 16px 18px;box-shadow:0 6px 20px rgba(0,0,0,.4);display:none;}
+#city-panel{width:100%;max-width:625px;background:#222;border-radius:0 0 16px 16px;margin-top:-4px;padding:14px 16px 18px;box-shadow:0 6px 20px rgba(0,0,0,.4);display:none;}
 #city-panel h3{font-size:15px;color:#f4a0b0;margin-bottom:10px;font-weight:600;}
 #city-list{display:flex;flex-wrap:wrap;gap:8px;}
 .city-btn{padding:6px 14px;border-radius:20px;background:#2a2a2a;color:#ccc;font-size:13px;border:1px solid #444;cursor:pointer;text-decoration:none;display:inline-block;transition:background .15s;}
@@ -68,6 +70,7 @@ g[data-region]{cursor:pointer;-webkit-tap-highlight-color:transparent;}
     </select>
   </div>
 </div>
+
 
 <div class="map-card">
 <?xml version="1.0" encoding="utf-8"?>
